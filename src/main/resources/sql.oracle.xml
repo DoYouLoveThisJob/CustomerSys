@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<DB id="oracle">
+    <sql  id="mySql">
+        <value>
+            <![CDATA[
+            select * from table where t.id<>1
+           ]]>
+        </value>
+    </sql>
+     <sql  id="mySql2">
+         <value>
+                select * from table where t.id>1
+         </value>
+     </sql>
+</DB>

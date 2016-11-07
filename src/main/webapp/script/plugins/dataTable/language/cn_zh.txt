@@ -1,0 +1,17 @@
+{
+	"processing": "处理中...",
+	"lengthMenu": "_MENU_ 每页显示",
+	"sZeroRecords": "没有检索到数据",
+	"info": "_START_ 到 _END_ 记录 _TOTAL_ 记录",
+	"infoEmpty": "0 到 0 共 0 记录",
+	"infoFiltered": "(过滤 _MAX_ 记录)",
+	"infoPostFix": "",
+	"search": "搜索",
+	"url": "",
+	"paginate": {
+		"first":    "第一页",
+		"previous": "上一页",
+		"next":     "下一页",
+		"last":     "最末页"
+	}
+}

@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx" xmlns:context="http://www.springframework.org/schema/context" xmlns:p="http://www.springframework.org/schema/p" xmlns:cache="http://www.springframework.org/schema/cache" xmlns:jaxws="http://cxf.apache.org/jaxws"
+       xsi:schemaLocation="
+                    http://www.springframework.org/schema/beans
+                    http://www.springframework.org/schema/beans/spring-beans.xsd
+                    http://www.springframework.org/schema/tx
+                    http://www.springframework.org/schema/tx/spring-tx-3.1.xsd
+                    http://www.springframework.org/schema/aop
+                    http://www.springframework.org/schema/aop/spring-aop-3.1.xsd
+                    http://www.springframework.org/schema/context
+                    http://www.springframework.org/schema/context/spring-context-3.1.xsd
+                    http://www.springframework.org/schema/cache
+                    http://www.springframework.org/schema/cache/spring-cache-3.1.xsd
+                    http://cxf.apache.org/jaxws http://cxf.apache.org/schemas/jaxws.xsd ">
+    <!-- 注解支持 -->
+    <context:annotation-config />
+    <!-- 启动组件扫描，排除@Controller组件，该组件由SpringMVC配置文件扫描 -->
+    <context:component-scan base-package="com">
+    </context:component-scan>
+    <bean id="springUtils" class="com.lesso.util.SpringUtils" />
+    <bean id="applicationUtil" class="com.lesso.util.ApplicationUtil" />
+    <!-- 属性文件位置 -->
+    <bean id="annotationPropertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="locations">
+            <list>
+                <value>classpath:mongodb.properties</value>
+                <value>classpath:mongodb.properties</value>
+                <value>classpath:sys.properties</value>
+                <value>classpath:log4j.properties</value>
+                <value>classpath:jdbc.properties</value>
+            </list>
+        </property>
+    </bean>
+
+    <!-- 实体映射 -->
+    <bean id="packagesToScan" class="org.springframework.beans.factory.config.ListFactoryBean">
+        <property name="sourceList">
+            <list>
+                <value>cn.czx.test.entity</value>
+            </list>
+        </property>
+    </bean>
+
+    <!--aop控制事务 -->
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <property name="defaultEncoding" value="utf-8"></property>
+    </bean>
+    <!--oracle 数据源定义,使用c3p0数据源 -->
+    <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
+        <property name="driverClass" value="${driverClass}"></property>
+        <property name="jdbcUrl" value="${jdbc.url.value}"></property>
+        <property name="user" value="${jdbc.user.value}"></property>
+        <property name="password" value="${jdbc.password.value}"></property>
+        <property name="maxPoolSize" value="${c3p0.maxPoolSize}"></property>
+        <property name="minPoolSize" value="${c3p0.minPoolSize}"></property>
+        <property name="initialPoolSize" value="${c3p0.initialPoolSize}"></property>
+        <property name="acquireIncrement" value="${c3p0.acquireIncrement}"></property>
+        <property name="checkoutTimeout" value="${c3p0.checkoutTimeout}"></property>
+    </bean>
+    <!--aop事务映射方法集合-->
+    <tx:advice id="txAdvice" transaction-manager="txManager">
+        <!-- the transactional semantics... -->
+        <tx:attributes>
+            <!-- all methods starting with 'get' are read-only -->
+            <tx:method name="get*" read-only="true"/>
+            <tx:method name="add*" isolation="READ_COMMITTED"
+                       propagation="REQUIRED" rollback-for="Exception,RuntimeException"
+                       timeout="180" />
+            <tx:method name="save*" isolation="READ_COMMITTED"
+                       propagation="REQUIRED" rollback-for="Exception,RuntimeException"
+                       timeout="180" />
+            <tx:method name="cfg*" isolation="READ_COMMITTED"
+                       propagation="REQUIRED" rollback-for="Exception,RuntimeException"
+                       timeout="180" />
+            <tx:method name="create*" isolation="READ_COMMITTED"
+                       propagation="REQUIRED" rollback-for="Exception,RuntimeException"
+                       timeout="180" />
+            <tx:method name="update*" isolation="READ_COMMITTED"
+                       propagation="REQUIRED" rollback-for="Exception,RuntimeException"
+                       timeout="180" />
+            <tx:method name="del*" isolation="READ_COMMITTED"
+                       propagation="REQUIRED" rollback-for="Exception,RuntimeException"
+                       timeout="180" />
+            <tx:method name="add*" isolation="READ_COMMITTED"
+                       propagation="REQUIRED" rollback-for="Exception,RuntimeException"
+                       timeout="180" />
+            <tx:method name="*Tx" isolation="READ_COMMITTED"
+                       propagation="REQUIRED" rollback-for="Exception,RuntimeException"
+                       timeout="180" />
+            <tx:method name="remove*" isolation="READ_COMMITTED"
+                       propagation="REQUIRED" rollback-for="Exception,RuntimeException"
+                       timeout="180" />
+            <tx:method name="excu*" isolation="READ_COMMITTED"
+                       propagation="REQUIRED" rollback-for="Exception,RuntimeException" />
+        </tx:attributes>
+    </tx:advice>
+    <!-- ensure that the above transactional advice runs for any execution
+        of an operation defined by the FooService interface -->
+    <aop:config>
+        <aop:pointcut id="fooServiceOperation" expression="execution(* com.lesso.service.impl..*.*(..))"/>
+        <!--execution(public * com.sealinkin..*.service..*..*.*(..))-->
+        <aop:advisor advice-ref="txAdvice" pointcut-ref="fooServiceOperation"/>
+    </aop:config>
+    <!-- similarly, don't forget the PlatformTransactionManager 事务管理器-->
+    <bean id="txManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+    <!-- 暂时不使用spring mongodb -->
+    <!--<import resource="classpath:mongodb.xml"/>-->
+    <import resource="classpath:applicationContext-quartz.xml"/>
+    <import resource="classpath:applicationContext-db.xml"/>
+</beans>

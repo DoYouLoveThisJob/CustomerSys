@@ -45,8 +45,8 @@ public class TestController {
            parentZtreeNode.setpId("0");
            parentZtreeNode.setId((i+1)+"");
            parentZtreeNode.setName("父亲节点"+(i+1));
-           parentZtreeNode.setParent(true);
-           parentZtreeNode.setOpen(false);
+           //parentZtreeNode.setParent(true);
+           parentZtreeNode.setOpen(true);
            ztreeNodes.add(parentZtreeNode);
            for(int j=0;j<3;j++){
                ZtreeNode childrenZtreeNode=new ZtreeNode();
@@ -54,11 +54,21 @@ public class TestController {
                childrenZtreeNode.setpId((i+1)+"");
                childrenZtreeNode.setId((i+1)*10+j+1+"");
                childrenZtreeNode.setName("子节点节点"+((i+1)*10+j+1));
-               childrenZtreeNode.setParent(false);
-               childrenZtreeNode.setOpen(false);
+               //childrenZtreeNode.setParent(false);
+               childrenZtreeNode.setOpen(true);
                ztreeNodes.add(childrenZtreeNode);
            }
        }
+
+        ZtreeNode childrenZtreeNode=new ZtreeNode();
+        childrenZtreeNode.setChecked(false);
+        childrenZtreeNode.setpId("11");
+        childrenZtreeNode.setId("1101");
+        childrenZtreeNode.setName("子节点节点1101");
+        //childrenZtreeNode.setParent(false);
+        childrenZtreeNode.setOpen(false);
+        ztreeNodes.add(childrenZtreeNode);
+
         String jsonp=request.getParameter("callback");
         String jsonpResult=JSON.toJSONString(ztreeNodes);
         res.setContentType("application/json;charset=UTF-8");

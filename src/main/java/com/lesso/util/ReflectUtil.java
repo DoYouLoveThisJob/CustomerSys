@@ -109,7 +109,7 @@ public class ReflectUtil {
                 Object value = rs.getObject(key);
                 //确保value有效性，防止JSON reflect时异常
                 if (value != null) {
-                    if(value instanceof oracle.sql.TIMESTAMP ){
+                    if(value instanceof oracle.sql.TIMESTAMP){
                         conCurrent.put(en.getKey(), rs.getTimestamp(key));
                     }else{
                         conCurrent.put(en.getKey(), rs.getObject(key));

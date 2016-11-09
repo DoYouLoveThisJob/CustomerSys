@@ -1,7 +1,8 @@
 package com.lesso.util;
 
 
-import jdk.nashorn.internal.runtime.regexp.joni.encoding.IntHolder;
+
+import org.omg.CORBA.IntHolder;
 
 import java.lang.reflect.Array;
 import java.util.Arrays;

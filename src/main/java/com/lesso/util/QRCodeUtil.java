@@ -176,8 +176,8 @@ public class QRCodeUtil {
 }
 
     public static void main(String[] args) throws Exception {
-        String text = "1234567897984651313213213213145646541361321321345646513132131324154654654654165132132132465464654613216546546135646134654613123456161614";
-        QRCodeUtil.encode(text, "", "d:/MyWorkDoc", true);
+        String text = "沉迷工作，日渐颓废，你这样吃枣药丸，还不赶快出去玩的说！";
+        QRCodeUtil.encode(text, "", "D:\\二维码\\gsb", true);
         //System.out.println(QRCodeUtil.decode(new File( "d:/MyWorkDoc/21929869.jpg")));
     }
 

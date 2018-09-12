@@ -9,18 +9,14 @@ import java.awt.geom.RoundRectangle2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.OutputStream;
+import java.util.HashMap;
 import java.util.Hashtable;
+import java.util.Map;
 import java.util.Random;
 
 import javax.imageio.ImageIO;
 
-import com.google.zxing.BarcodeFormat;
-import com.google.zxing.BinaryBitmap;
-import com.google.zxing.DecodeHintType;
-import com.google.zxing.EncodeHintType;
-import com.google.zxing.MultiFormatReader;
-import com.google.zxing.MultiFormatWriter;
-import com.google.zxing.Result;
+import com.google.zxing.*;
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.common.HybridBinarizer;
 import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
@@ -173,11 +169,66 @@ public class QRCodeUtil {
     public static String decode(String path) throws Exception {
         return QRCodeUtil.decode(new File(path));
 
-}
+    }
+
+
+    /**
+     * 二维码的解析
+     *
+     * @param file
+     */
+    public static void parseCode(File file)
+    {
+        try
+        {
+            MultiFormatReader formatReader = new MultiFormatReader();
+
+            if (!file.exists())
+            {
+                return;
+            }
+
+            BufferedImage image = ImageIO.read(file);
+
+            LuminanceSource source = new BufferedImageLuminanceSource(image);
+            Binarizer binarizer = new HybridBinarizer(source);
+            BinaryBitmap binaryBitmap = new BinaryBitmap(binarizer);
+
+            Map hints = new HashMap();
+            hints.put(EncodeHintType.CHARACTER_SET, "UTF-8");
+
+            Result result = formatReader.decode(binaryBitmap, hints);
+
+            System.out.println("解析结果 = " + result.toString());
+            System.out.println("二维码格式类型 = " + result.getBarcodeFormat());
+            System.out.println("二维码文本内容 = " + result.getText());
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
+
+
+    public static void parseCode(String filePath)
+    {
+        try
+        {
+          File file=new File(filePath);
+          parseCode(file);
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
+
 
     public static void main(String[] args) throws Exception {
-        String text = "沉迷工作，日渐颓废，你这样吃枣药丸，还不赶快出去玩的说！";
-        QRCodeUtil.encode(text, "", "D:\\二维码\\gsb", true);
+        String text = "https://weixin.qq.com/g/A00vqnvsS0cYARgE";
+        QRCodeUtil.encode(text, "C:\\Users\\czx\\Desktop\\TIM截图20180912102950.png", "C:\\Users\\czx\\Desktop\\", true);
+
+        //QRCodeUtil.parseCode("C:\\Users\\czx\\Desktop\\1536717478(1).jpg");
         //System.out.println(QRCodeUtil.decode(new File( "d:/MyWorkDoc/21929869.jpg")));
     }
 

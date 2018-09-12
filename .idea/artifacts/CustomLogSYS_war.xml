@@ -1,8 +1,0 @@
-<component name="ArtifactManager">
-  <artifact type="war" name="CustomLogSYS:war">
-    <output-path>$PROJECT_DIR$/target</output-path>
-    <root id="archive" name="CustomLogSYS.war">
-      <element id="artifact" artifact-name="CustomLogSYS:war exploded" />
-    </root>
-  </artifact>
-</component>
